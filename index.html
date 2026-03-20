@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공통수학 1 - 다항식 마스터하기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- 수식 렌더링을 위한 MathJax 설정 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; scroll-behavior: smooth; }
+        .math-card { transition: all 0.3s ease; }
+        .math-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .formula-box { background: #f8fafc; border-left: 4px solid #3b82f6; transition: background 0.2s; padding: 1rem; border-radius: 0.5rem; }
+        .formula-box:hover { background: #eff6ff; }
+        .formula-tag { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; display: block; color: #60a5fa; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-blue-600 flex items-center">
+                <span class="mr-2">📐</span> Math Class: 다항식
+            </h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#intro" class="hover:text-blue-500 font-medium">홈</a>
+                <a href="#op" class="hover:text-blue-500 font-medium">연산/곱셈공식</a>
+                <a href="#rem" class="hover:text-blue-500 font-medium">항등식/나머지 정리</a>
+                <a href="#fact" class="hover:text-blue-500 font-medium">인수분해공식</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="intro" class="pt-32 pb-20 bg-gradient-to-br from-blue-50 to-indigo-100 px-6 border-b border-indigo-100">
+        <div class="container mx-auto text-center">
+            <span class="inline-block px-4 py-1 mb-4 text-sm font-semibold text-blue-700 bg-blue-100 rounded-full animate__animated animate__fadeIn">공통수학 1 - 핵심 개념 정리</span>
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">다항식의 모든 공식을<br><span class="text-blue-600">한 페이지로 마스터!</span></h2>
+            <p class="text-lg text-gray-600 mb-10 max-w-2xl mx-auto italic">"수학은 암기가 아니라 이해지만, 공식은 무기가 됩니다."</p>
+            <div class="flex justify-center gap-4">
+                <a href="#op" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition">공식 공부하기</a>
+                <button onclick="showQuickQuiz()" class="px-8 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg font-bold hover:bg-blue-50 transition shadow-sm">연습문제</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-20">
+        
+        <!-- Section 1: 다항식의 연산 & 곱셈 공식 -->
+        <section id="op" class="mb-32 animate__animated animate__fadeInUp">
+            <div class="flex items-center mb-10">
+                <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center text-2xl font-bold mr-4 shadow-lg">01</div>
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-800">다항식의 연산 & 곱셈 공식</h3>
+                    <p class="text-gray-500">Polynomial Operations & Multiplication Formulas</p>
+                </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- 기초 공식 -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-blue-600 border-b-2 border-blue-100 pb-2">기초 및 2차 공식</h4>
+                    <div class="formula-box">
+                        <span class="formula-tag">완전제곱식</span>
+                        <div class="text-lg">$(a \pm b)^2 = a^2 \pm 2ab + b^2$</div>
+                    </div>
+                    <div class="formula-box">
+                        <span class="formula-tag">합차 공식</span>
+                        <div class="text-lg">$(a + b)(a - b) = a^2 - b^2$</div>
+                    </div>
+                    <div class="formula-box">
+                        <span class="formula-tag">세 항의 제곱</span>
+                        <div class="text-lg">$(a+b+c)^2 = a^2+b^2+c^2+2(ab+bc+ca)$</div>
+                    </div>
+                </div>
+
+                <!-- 3차 공식 -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-blue-600 border-b-2 border-blue-100 pb-2">3차식 전개 공식</h4>
+                    <div class="formula-box">
+                        <span class="formula-tag">합/차의 세제곱</span>
+                        <div class="text-lg">$(a \pm b)^3 = a^3 \pm 3a^2b + 3ab^2 \pm b^3$</div>
+                    </div>
+                    <div class="formula-box">
+                        <span class="formula-tag">세제곱 합/차</span>
+                        <div class="text-md">$(a+b)(a^2-ab+b^2) = a^3 + b^3$</div>
+                        <div class="text-md">$(a-b)(a^2+ab+b^2) = a^3 - b^3$</div>
+                    </div>
+                    <div class="formula-box">
+                        <span class="formula-tag">특수 공식</span>
+                        <div class="text-sm">$(x+a)(x+b)(x+c) = x^3+(a+b+c)x^2+(ab+bc+ca)x+abc$</div>
+                    </div>
+                </div>
+
+                <!-- 변형 공식 -->
+                <div class="space-y-4">
+                    <h4 class="font-bold text-blue-600 border-b-2 border-blue-100 pb-2">중요 변형 공식</h4>
+                    <div class="formula-box">
+                        <span class="formula-tag">제곱/세제곱 합 변형</span>
+                        <div class="text-sm">$a^2+b^2 = (a+b)^2 - 2ab$</div>
+                        <div class="text-sm">$a^3+b^3 = (a+b)^3 - 3ab(a+b)$</div>
+                    </div>
+                    <div class="formula-box">
+                        <span class="formula-tag">분수식 변형</span>
+                        <div class="text-sm">$x^2+\frac{1}{x^2} = (x+\frac{1}{x})^2 - 2$</div>
+                        <div class="text-sm">$x^3+\frac{1}{x^3} = (x+\frac{1}{x})^3 - 3(x+\frac{1}{x})$</div>
+                    </div>
+                    <div class="formula-box">
+                        <span class="formula-tag">복합 변형</span>
+                        <div class="text-xs">$a^2+b^2+c^2-ab-bc-ca = \frac{1}{2}\{(a-b)^2+(b-c)^2+(c-a)^2\}$</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: 항등식과 나머지 정리 -->
+        <section id="rem" class="mb-32 animate__animated animate__fadeInUp">
+            <div class="flex items-center mb-10">
+                <div class="w-12 h-12 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-2xl font-bold mr-4 shadow-lg">02</div>
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-800">항등식과 나머지 정리</h3>
+                    <p class="text-gray-500">Identities, Remainder Theorem, and Factor Theorem</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <!-- 항등식의 정의 및 성질 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
+                    <h4 class="text-xl font-bold mb-4 text-indigo-700">1. 항등식</h4>
+                    <div class="space-y-4 text-gray-700">
+                        <p class="leading-relaxed">
+                            <span class="font-bold text-indigo-600">정의:</span> 등식에 포함된 문자에 어떤 값을 대입하여도 항상 성립하는 등식을 그 문자에 대한 <strong>항등식</strong>이라고 한다.
+                        </p>
+                        <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-400">
+                            <p class="text-sm font-bold mb-3">[항등식의 성질]</p>
+                            <div class="space-y-3">
+                                <p class="text-sm">$ax^2 + bx + c = 0$이 $x$에 대한 항등식이면<br>$\Rightarrow a=0, b=0, c=0$</p>
+                                <p class="text-sm">$ax^2 + bx + c = a'x^2 + b'x + c'$이 $x$에 대한 항등식이면<br>$\Rightarrow a=a', b=b', c=c'$</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-500 italic">* 미정계수법: 계수비교법, 수치대입법</p>
+                    </div>
+                </div>
+
+                <!-- 나머지 정리 및 인수 정리 -->
+                <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100">
+                    <h4 class="text-xl font-bold mb-4 text-indigo-700">2. 나머지 정리와 인수 정리</h4>
+                    <div class="space-y-4 text-gray-700">
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <p class="font-bold text-indigo-600 mb-2">나머지 정리</p>
+                            <p class="text-sm leading-relaxed text-gray-600">
+                                다항식 $f(x)$를 일차식 $x-\alpha$로 나누었을 때의 나머지를 $R$라고 하면<br>
+                                <span class="text-lg font-bold text-indigo-800">$$R = f(\alpha)$$</span>
+                            </p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <p class="font-bold text-indigo-600 mb-2">인수 정리</p>
+                            <div class="text-sm leading-relaxed text-gray-600 space-y-1">
+                                <p>1. $f(\alpha)=0$이면 $f(x)$는 일차식 $x-\alpha$로 나누어떨어진다.</p>
+                                <p>2. $f(x)$가 $x-\alpha$로 나누어떨어지면 $f(\alpha)=0$이다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-indigo-900 text-white p-8 rounded-2xl shadow-xl">
+                <h4 class="text-lg font-bold mb-3 flex items-center">
+                    <span class="mr-2">💡</span> 교과서 핵심 포인트
+                </h4>
+                <p class="text-indigo-100 leading-relaxed text-sm">
+                    다항식의 나눗셈 식 $f(x) = (x-\alpha)Q(x) + R$은 $x$에 대한 <strong>항등식</strong>입니다. 
+                    따라서 이 식에 $x=\alpha$를 대입하면 $Q(x)$에 관계없이 $R$의 값을 구할 수 있다는 것이 나머지 정리의 핵심 원리입니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 3: 인수분해 공식 -->
+        <section id="fact" class="mb-20 animate__animated animate__fadeInUp">
+            <div class="flex items-center mb-10">
+                <div class="w-12 h-12 bg-purple-600 text-white rounded-xl flex items-center justify-center text-2xl font-bold mr-4 shadow-lg">03</div>
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-800">인수분해 공식</h3>
+                    <p class="text-gray-500">Factoring Formulas</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 기본형 -->
+                <div class="math-card bg-white p-6 rounded-xl shadow-md border-t-4 border-purple-500">
+                    <h4 class="font-bold text-lg mb-4 text-purple-700">기본 & 2차형</h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="p-2 bg-purple-50 rounded">$ma + mb = m(a+b)$</div>
+                        <div class="p-2 bg-purple-50 rounded">$a^2+2ab+b^2 = (a+b)^2$</div>
+                        <div class="p-2 bg-purple-50 rounded">$a^2-b^2 = (a+b)(a-b)$</div>
+                        <div class="p-2 bg-purple-50 rounded">$x^2+(a+b)x+ab = (x+a)(x+b)$</div>
+                    </div>
+                </div>
+                <!-- 3차형 -->
+                <div class="math-card bg-white p-6 rounded-xl shadow-md border-t-4 border-purple-500">
+                    <h4 class="font-bold text-lg mb-4 text-purple-700">3차 공식 (필수 암기)</h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="p-2 bg-purple-50 rounded">$a^3+3a^2b+3ab^2+b^3 = (a+b)^3$</div>
+                        <div class="p-2 bg-purple-50 rounded">$a^3+b^3 = (a+b)(a^2-ab+b^2)$</div>
+                        <div class="p-2 bg-purple-50 rounded">$a^3-b^3 = (a-b)(a^2+ab+b^2)$</div>
+                        <div class="p-2 bg-purple-50 rounded text-xs">$a^3+b^3+c^3-3abc = (a+b+c)(a^2+b^2+c^2-ab-bc-ca)$</div>
+                    </div>
+                </div>
+                <!-- 심화/특수형 -->
+                <div class="math-card bg-white p-6 rounded-xl shadow-md border-t-4 border-purple-500">
+                    <h4 class="font-bold text-lg mb-4 text-purple-700">복잡한 식 & 특수형</h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="p-2 bg-purple-50 rounded">$a^4+a^2b^2+b^4 = (a^2+ab+b^2)(a^2-ab+b^2)$</div>
+                        <div class="p-2 bg-purple-50 rounded">인수정리 활용: $f(\alpha)=0$이면 $(x-\alpha)$로 나눔</div>
+                        <div class="p-2 bg-purple-50 rounded">복이차식: $x^2=X$ 치환 또는 $A^2-B^2$ 변형</div>
+                        <div class="p-2 bg-purple-50 rounded">여러 개의 문자: 낮은 차수 문자로 정리</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 연습문제 모달 (기존 퀴즈 모달에서 이름 및 구성 변경) -->
+        <div id="quizModal" class="fixed inset-0 bg-black/50 hidden z-[60] flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-md rounded-2xl p-8 relative shadow-2xl">
+                <button onclick="closeQuiz()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">✕</button>
+                <h3 class="text-2xl font-bold mb-4">단원별 연습문제 ✍️</h3>
+                <div id="quizBody">
+                    <p class="mb-4 font-medium text-gray-700">개념 확인: 다음 중 $a^3 - b^3$을 올바르게 인수분해한 것은?</p>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="checkAnswer(1)" class="p-3 text-left border rounded hover:bg-blue-50 transition">$(a-b)^3$</button>
+                        <button onclick="checkAnswer(2)" class="p-3 text-left border rounded hover:bg-blue-50 transition">$(a-b)(a^2+ab+b^2)$</button>
+                        <button onclick="checkAnswer(3)" class="p-3 text-left border rounded hover:bg-blue-50 transition">$(a-b)(a^2-ab+b^2)$</button>
+                        <button onclick="checkAnswer(4)" class="p-3 text-left border rounded hover:bg-blue-50 transition">$(a+b)(a^2-ab+b^2)$</button>
+                    </div>
+                </div>
+                <div id="quizResult" class="hidden mt-6 p-4 rounded-lg text-center font-bold"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-12 border-t">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-600 font-bold mb-2">공통수학 1 : 다항식 완벽 가이드</p>
+            <p class="text-gray-400 text-sm">제작: 수학 선생님 | 모든 공식은 교과과정을 준수합니다.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleExample(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('hidden');
+            el.classList.add('animate__animated', 'animate__fadeIn');
+            if (window.MathJax) {
+                MathJax.typesetPromise([el]);
+            }
+        }
+
+        function showQuickQuiz() {
+            document.getElementById('quizModal').classList.remove('hidden');
+            document.getElementById('quizResult').classList.add('hidden');
+            if (window.MathJax) {
+                MathJax.typesetPromise([document.getElementById('quizModal')]);
+            }
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizModal').classList.add('hidden');
+        }
+
+        function checkAnswer(choice) {
+            const result = document.getElementById('quizResult');
+            result.classList.remove('hidden');
+            if (choice === 2) {
+                result.innerHTML = "정답입니다! $a^3-b^3 = (a-b)(a^2+ab+b^2)$ 입니다. 🎯";
+                result.className = "mt-6 p-4 rounded-lg text-center font-bold bg-green-100 text-green-700";
+            } else {
+                result.textContent = "틀렸습니다. 공식을 다시 확인해보세요! 😢";
+                result.className = "mt-6 p-4 rounded-lg text-center font-bold bg-red-100 text-red-700";
+            }
+            if (window.MathJax) {
+                MathJax.typesetPromise([result]);
+            }
+        }
+    </script>
+</body>
+</html>
