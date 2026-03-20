@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공통수학 1 - 다항식 마스터</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax 3 사용: 더 빠르고 안정적인 렌더링 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                enableMenu: false
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap');
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; }
+        .math-card { transition: transform 0.2s; }
+        .math-card:hover { transform: translateY(-5px); }
+        .correct { background-color: #dcfce7 !important; border-color: #22c55e !important; }
+        .incorrect { background-color: #fee2e2 !important; border-color: #ef4444 !important; }
+        /* 수식 로딩 전 숨김 처리로 깨짐 방지 */
+        .mjx-container { font-size: 1.1em !important; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-slate-800 mb-2">🎓 공통수학 1: 다항식의 연산</h1>
+            <p class="text-slate-600">곱셈공식과 인수분해를 마스터해보세요!</p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="flex mb-6 bg-slate-200 p-1 rounded-lg">
+            <button onclick="switchTab('cards')" id="tab-cards" class="flex-1 py-2 rounded-md font-semibold bg-white shadow-sm text-blue-600 transition-all">공식 암기 카드</button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="flex-1 py-2 rounded-md font-semibold text-slate-600 transition-all">실전 퀴즈</button>
+        </div>
+
+        <!-- Section: Formula Cards -->
+        <section id="section-cards" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Multiplication Formulas -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
+                <h2 class="text-xl font-bold mb-4 flex items-center border-b pb-2">
+                    <span class="mr-2">➕</span> 곱셈공식
+                </h2>
+                <ul class="space-y-4 text-lg">
+                    <li class="p-3 bg-slate-50 rounded">$(a+b+c)^2 = a^2+b^2+c^2+2(ab+bc+ca)$</li>
+                    <li class="p-3 bg-slate-50 rounded">$(a+b)^3 = a^3+3a^2b+3ab^2+b^3$</li>
+                    <li class="p-3 bg-slate-50 rounded">$(a-b)^3 = a^3-3a^2b+3ab^2-b^3$</li>
+                    <li class="p-3 bg-slate-50 rounded">$(a+b)(a^2-ab+b^2) = a^3+b^3$</li>
+                    <li class="p-3 bg-slate-50 rounded">$(a-b)(a^2+ab+b^2) = a^3-b^3$</li>
+                </ul>
+            </div>
+
+            <!-- Factorization -->
+            <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-emerald-500">
+                <h2 class="text-xl font-bold mb-4 flex items-center border-b pb-2">
+                    <span class="mr-2">🔍</span> 인수분해 공식
+                </h2>
+                <ul class="space-y-4 text-lg">
+                    <li class="p-3 bg-slate-50 rounded">$a^3+b^3 = (a+b)(a^2-ab+b^2)$</li>
+                    <li class="p-3 bg-slate-50 rounded">$a^3-b^3 = (a-b)(a^2+ab+b^2)$</li>
+                    <li class="p-3 bg-slate-50 rounded">$a^2+b^2+c^2+2ab+2bc+2ca = (a+b+c)^2$</li>
+                    <li class="p-3 bg-slate-50 rounded">$a^3+b^3+c^3-3abc = (a+b+c)(a^2+b^2+c^2-ab-bc-ca)$</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section: Quiz -->
+        <section id="section-quiz" class="hidden">
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">인터랙티브 퀴즈</h2>
+                    <span id="score" class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full font-bold">점수: 0 / 0</span>
+                </div>
+
+                <div id="quiz-container" class="space-y-8">
+                    <!-- Questions will be injected here -->
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button onclick="resetQuiz()" class="bg-slate-800 text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-700 transition-colors">문제 새로고침</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "(x+2y+3z)^2 \\text{을 전개하면?}",
+                options: [
+                    "x^2+4y^2+9z^2+4xy+12yz+6zx",
+                    "x^2+4y^2+9z^2+2xy+6yz+3zx",
+                    "x^2+2y^2+3z^2+4xy+12yz+6zx",
+                    "x^2+4y^2+9z^2+4xy+6yz+12zx"
+                ],
+                ans: 0
+            },
+            {
+                q: "(2a-b)^3 \\text{을 전개하면?}",
+                options: [
+                    "8a^3-12a^2b+6ab^2-b^3",
+                    "8a^3-6a^2b+6ab^2-b^3",
+                    "4a^3-12a^2b+6ab^2-b^3",
+                    "8a^3-12a^2b+4ab^2-b^3"
+                ],
+                ans: 0
+            },
+            {
+                q: "x^3+27 \\text{을 인수분해하면?}",
+                options: [
+                    "(x+3)(x^2-3x+9)",
+                    "(x+3)(x^2+3x+9)",
+                    "(x-3)(x^2+3x+9)",
+                    "(x+3)^3"
+                ],
+                ans: 0
+            },
+            {
+                q: "a^3-8b^3 \\text{을 인수분해하면?}",
+                options: [
+                    "(a-2b)(a^2+2ab+4b^2)",
+                    "(a-2b)(a^2-2ab+4b^2)",
+                    "(a+2b)(a^2+2ab+4b^2)",
+                    "(a-2b)^3"
+                ],
+                ans: 0
+            },
+            {
+                q: "x^2+y^2+z^2-2xy-2yz+2zx \\text{를 인수분해하면?}",
+                options: [
+                    "(x-y+z)^2",
+                    "(x+y-z)^2",
+                    "(x-y-z)^2",
+                    "(x+y+z)^2"
+                ],
+                ans: 0
+            }
+        ];
+
+        let currentScore = 0;
+        let answeredCount = 0;
+
+        function switchTab(tab) {
+            const cardsBtn = document.getElementById('tab-cards');
+            const quizBtn = document.getElementById('tab-quiz');
+            const cardsSec = document.getElementById('section-cards');
+            const quizSec = document.getElementById('section-quiz');
+
+            if (tab === 'cards') {
+                cardsBtn.classList.add('bg-white', 'shadow-sm', 'text-blue-600');
+                cardsBtn.classList.remove('text-slate-600');
+                quizBtn.classList.remove('bg-white', 'shadow-sm', 'text-blue-600');
+                quizBtn.classList.add('text-slate-600');
+                cardsSec.classList.remove('hidden');
+                quizSec.classList.add('hidden');
+            } else {
+                quizBtn.classList.add('bg-white', 'shadow-sm', 'text-blue-600');
+                quizBtn.classList.remove('text-slate-600');
+                cardsBtn.classList.remove('bg-white', 'shadow-sm', 'text-blue-600');
+                cardsBtn.classList.add('text-slate-600');
+                quizSec.classList.remove('hidden');
+                cardsSec.classList.add('hidden');
+                renderQuiz();
+            }
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            answeredCount = 0;
+            currentScore = 0;
+            updateScore();
+
+            questions.forEach((item, qIdx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'p-5 border border-slate-200 rounded-lg bg-slate-50';
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, oIdx) => {
+                    optionsHtml += `
+                        <button onclick="checkAnswer(${qIdx}, ${oIdx}, this)" 
+                                class="w-full text-left p-3 my-1 border-2 border-slate-200 bg-white rounded-md hover:border-blue-300 transition-all">
+                            $${opt}$
+                        </button>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <p class="text-lg font-semibold mb-3">${qIdx + 1}. $${item.q}$</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        ${optionsHtml}
+                    </div>
+                    <div id="feedback-${qIdx}" class="mt-3 font-bold hidden"></div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            // MathJax 3 렌더링 방식 적용
+            if (window.MathJax) {
+                MathJax.typesetPromise([container]);
+            }
+        }
+
+        function checkAnswer(qIdx, selectedIdx, btn) {
+            const parent = btn.parentElement;
+            const feedback = document.getElementById(`feedback-${qIdx}`);
+            
+            if (feedback.classList.contains('revealed')) return;
+            
+            answeredCount++;
+            feedback.classList.add('revealed');
+            feedback.classList.remove('hidden');
+
+            if (selectedIdx === questions[qIdx].ans) {
+                btn.classList.add('correct');
+                feedback.innerText = "정답입니다! ✨";
+                feedback.classList.add('text-green-600');
+                currentScore++;
+            } else {
+                btn.classList.add('incorrect');
+                const allButtons = parent.querySelectorAll('button');
+                allButtons[questions[qIdx].ans].classList.add('correct');
+                feedback.innerText = "오답입니다. 올바른 공식을 다시 확인해 보세요.";
+                feedback.classList.add('text-red-600');
+            }
+            
+            updateScore();
+        }
+
+        function updateScore() {
+            document.getElementById('score').innerText = `점수: ${currentScore} / ${answeredCount}`;
+        }
+
+        function resetQuiz() {
+            renderQuiz();
+        }
+    </script>
+</body>
+</html>
